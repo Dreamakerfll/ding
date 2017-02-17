@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+<title>文件上传</title>
+<script type="text/javascript" src="../libs/jquery-3.0.0.min.js"></script>
+</head>
+<body>
+	bolo图片上传
+    <form action="" enctype="multipart/form-data">
+        <input type="text" name="filed1"/>
+        <input type="text" name="filed2"/>
+        <input type="text" name="filed3"/>
+        <input type="text" name="filed4"/>
+        <input type="file" id="file1" name="file1"/>
+    </form>
+    <button id="submit">提交</button>
+    <button id="submitPerson">提交任务数据</button>
+    <script>
+    $(function(){
+    	$('#submit').on('click',function(){
+//          var formElement = document.querySelector("form");
+//          var request = new XMLHttpRequest();
+//          request.open("POST", "http://127.0.0.1/ding-h5/index/receiveFile");
+//          request.send(new FormData(formElement));
+
+          var formData = new FormData();
+
+          formData.append("filed1", "就是你");
+          formData.append("accountnum", 123456); // number 123456 is immediately converted to a string "123456"
+
+          // HTML file input, chosen by user
+          formData.append("userfile", $('#file1')[0].files[0]);
+
+          // JavaScript file-like object
+          var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
+          var blob = new Blob([content], { type: "text/xml"});
+
+          formData.append("webmasterfile", blob);
+
+//          var request = new XMLHttpRequest();
+//          request.open("POST", "http://127.0.0.1/ding-h5/index/receiveFile");
+//          request.send(formData);
+
+          $.ajax({
+              url: 'http://127.0.0.1/ding-h5/index/receiveFile',
+              method: 'post',
+              processData: false,
+              contentType: false,
+              data: formData,
+              success:function(data){
+                  console.log(data);
+                  console.log(data.code);
+                  console.log(data.msg);
+              }
+              ,error:function(data){
+                  console.log(data);
+              }
+
+          });
+      });
+    	
+    	$('#submitPerson').on('click',function(){
+
+
+          $.ajax({
+              url: 'http://127.0.0.1/ding-h5/index/receivePerson',
+              type: 'post',
+              data: {"name":"小明","age":20,"birthday":"1990-11-24 11:11:11"},
+              dataType : 'json',
+              success:function(data){
+                  console.log(data);
+              }
+              ,error:function(data){
+                  console.log(data);
+              }
+
+          });
+      });
+    });
+    
+
+    </script>
+</body>
+</html>
