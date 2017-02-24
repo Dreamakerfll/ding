@@ -15,8 +15,42 @@
         <input type="text" name="filed4"/>
         <input type="file" id="file1" name="file1"/>
     </form>
-    <button id="submit">提交</button>
-    <button id="submitPerson">提交任务数据</button>
+    <button id="submit">提交文件</button>
+    
+    <button id="updatePerson">更新数据</button>
+    
+    <div>
+    	<div>查询条件</div>
+    	id<input id="id_search"/>
+    	name<input id="name_search"/>
+    	birthday<input id="birthday_search" type="datetime"/>
+    	area<input id="area_search"/>
+    	<button id="searchUser">查询用户</button>
+    </div>
+    
+    <div>
+    	<div>新增用户</div>
+    	name<input id="name_insert"/>
+    	birthday<input id="birthday_insert" type="datetime"/>
+    	area<input id="area_insert"/>
+    	<button id="insertUser">新增用户</button>
+    </div>
+    
+    <div>
+    	<div>更新用户</div>
+    	id<input id="id_update"/>
+    	name<input id="name_update"/>
+    	birthday<input id="birthday_update" type="datetime"/>
+    	area<input id="area_update"/>
+    	<button id="updateUser">更新用户</button>
+    </div>
+    
+    <div>
+    	<div>删除用户</div>
+    	id<input id="id_delete"/>
+    	<button id="deleteUser">删除用户</button>
+    </div>
+    
     <script>
     $(function(){
     	$('#submit').on('click',function(){
@@ -61,13 +95,18 @@
           });
       });
     	
-    	$('#submitPerson').on('click',function(){
+    	$('#searchUser').on('click',function(){
 
-
+    		//获取页面的用户数据
+    		var id = $('#id_search').val();
+    		var name = $('#name_search').val();
+    		var birthday = $('#birthday_search').val();
+    		var area = $('#area_search').val();
+    		
           $.ajax({
-              url: 'http://127.0.0.1/ding-h5/index/receivePerson',
+              url: 'http://127.0.0.1/ding-h5/index/selectUserByCondition',
               type: 'post',
-              data: {"name":"小明","age":20,"birthday":"1990-11-24 11:11:11"},
+              data: {"id":id,"name":name,"birthday":birthday,"area":area},
               dataType : 'json',
               success:function(data){
                   console.log(data);
@@ -78,6 +117,88 @@
 
           });
       });
+    	
+    	$('#insertUser').on('click',function(){
+
+    		//获取页面的用户数据
+    		var name = $('#name_insert').val();
+    		var birthday = $('#birthday_insert').val();
+    		var area = $('#area_insert').val();
+    		
+          $.ajax({
+              url: 'http://127.0.0.1/ding-h5/index/insertUser',
+              type: 'post',
+              data: {"name":name,"birthday":birthday,"area":area},
+              dataType : 'json',
+              success:function(data){
+                  console.log(data);
+              }
+              ,error:function(data){
+                  console.log(data);
+              }
+
+          });
+      });
+    	
+    	$('#updateUser').on('click',function(){
+
+    		//获取页面的用户数据
+    		var id = $('#id_update').val();
+    		var name = $('#name_update').val();
+    		var birthday = $('#birthday_update').val();
+    		var area = $('#area_update').val();
+    		
+          $.ajax({
+              url: 'http://127.0.0.1/ding-h5/index/updateUserByCondition',
+              type: 'post',
+              data: {"id":id,"name":name,"birthday":birthday,"area":area},
+              dataType : 'json',
+              success:function(data){
+                  console.log(data);
+              }
+              ,error:function(data){
+                  console.log(data);
+              }
+
+          });
+      });
+    	
+    	$('#deleteUser').on('click',function(){
+
+    		//获取页面的用户数据
+    		var id = $('#id_delete').val();
+    		
+          $.ajax({
+              url: 'http://127.0.0.1/ding-h5/index/deleteUser',
+              type: 'post',
+              data: {"id":id},
+              dataType : 'json',
+              success:function(data){
+                  console.log(data);
+              }
+              ,error:function(data){
+                  console.log(data);
+              }
+
+          });
+      });
+    	
+    	$('#updatePerson').on('click',function(){
+
+
+            $.ajax({
+                url: 'http://127.0.0.1/ding-h5/index/updatePerson',
+                type: 'post',
+                dataType : 'json',
+                success:function(data){
+                    console.log(data);
+                }
+                ,error:function(data){
+                    console.log(data);
+                }
+
+            });
+        });
     });
     
 

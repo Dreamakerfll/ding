@@ -33,15 +33,16 @@
      memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。默认策略是LRU（最近最少使用）。你可以设置为FIFO（先进先出）或是LFU（较少使用）
 备注: 持久化到硬盘的路径由虚拟机参数"java.io.tmpdir"决定.  例如, 在windows中, 会在此路径下 C:\Documents and Settings\li\Local Settings\Temp  在linux中, 通常会在: /tmp 下  System.out.println(System.getProperty("java.io.tmpdir"));   
     --> 
- 
-    <cache name="dingCache"   
-        maxElementsInMemory="10000"   
-        eternal="true"  
-        overflowToDisk="false"   
-        timeToIdleSeconds="0"   
-        timeToLiveSeconds="600"  
-        memoryStoreEvictionPolicy="LFU" />
-        
+   
+   <cache
+       name="userid"  
+       eternal="false"
+       maxElementsInMemory="100"
+       overflowToDisk="false"
+       diskPersistent="false"
+       timeToIdleSeconds="0"
+       timeToLiveSeconds="300"
+       memoryStoreEvictionPolicy="LRU" />
 
 
 </ehcache>

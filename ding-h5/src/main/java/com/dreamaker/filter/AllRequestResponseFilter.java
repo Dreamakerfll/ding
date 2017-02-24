@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.druid.util.PatternMatcher;
+import com.alibaba.druid.util.ServletPathMatcher;
 import com.dreamaker.util.BodyReaderHttpServletRequestWrapper;
 import com.dreamaker.util.BodyWriteHttpServletResponseWrapper;
 import com.dreamaker.util.RestResponse;
@@ -33,10 +35,31 @@ public class AllRequestResponseFilter implements Filter {
 		
 	}
 	
+	protected PatternMatcher   pathMatcher                       = new ServletPathMatcher();
+	
+	
 	public void doFilter(ServletRequest req, ServletResponse res,  
             FilterChain chain) throws IOException, ServletException {  
         HttpServletRequest hreq = (HttpServletRequest) req;  
         HttpServletResponse hres = (HttpServletResponse) res;  
+        
+        //排除所有的druid请求
+        String requestURI = hreq.getRequestURI();
+
+        String contextPath = hreq.getContextPath();
+        
+        if (contextPath != null && requestURI.startsWith(contextPath)) {
+            requestURI = requestURI.substring(contextPath.length());
+            if (!requestURI.startsWith("/")) {
+                requestURI = "/" + requestURI;
+            }
+        }
+        
+        if (pathMatcher.matches("/druid/*", requestURI)) {
+        	chain.doFilter(req, res);
+            return;
+        }
+        
         String reqMethod = hreq.getMethod();
         if("POST".equals(reqMethod)){  
         	Enumeration<String> e = hreq.getHeaderNames()   ;    

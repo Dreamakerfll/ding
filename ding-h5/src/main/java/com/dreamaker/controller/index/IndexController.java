@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -19,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import com.dreamaker.domain.person.Person;
-import com.dreamaker.service.person.PersonService;
+import com.dreamaker.domain.user.User;
+import com.dreamaker.service.user.UserService;
 
 @Controller
 @RequestMapping("index")
@@ -29,7 +29,7 @@ public class IndexController {
 	Logger log = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private PersonService personService1;
+	private UserService userService;
 	
 	@RequestMapping("home")
 	public String goToPage(){
@@ -131,23 +131,50 @@ public class IndexController {
 				return returnMap;
 	}
 	
-	@RequestMapping("receivePerson")
+	@RequestMapping("selectUserByCondition")
 	@ResponseBody
-	public Map<String,Object> receivePerson(HttpServletRequest request,Person person){
-		
-		System.out.println(request.getParameter("name"));
-		log.debug("HAHAHAH");
-		System.out.println(person.getAge());
-		System.out.println(person.getName());
-		System.out.println(person.getBirthday());
+	public Map<String,Object> selectUserByCondition(HttpServletRequest request,User user){
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("code", 200);
-		map.put("name", person.getName());
 		
-		Person per = personService1.getPerson();
-		System.out.println(per.getMessage_text());
+//		request.getSession().setAttribute("session", "胖子未来式");
+		List<User> userList = userService.selectUserByCondition(user);
+		map.put("msg", "获取成功！");
+		map.put("userList", userList);
 		return map;
 	}
+	
+	@RequestMapping("insertUser")
+	@ResponseBody
+	public String insertUser(HttpServletRequest request,User user){
+		
+		
+		int row = userService.insertUser(user);
+		System.out.println(row);
+		return row+"";
+	}
+	
+	@RequestMapping("updateUserByCondition")
+	@ResponseBody
+	public String updateUserByCondition(HttpServletRequest request,User user){
+		
+		
+		int row = userService.updateUserByCondition(user);
+		System.out.println(row);
+		return row+"";
+	}
+	
+	@RequestMapping("deleteUser")
+	@ResponseBody
+	public String deleteUser(HttpServletRequest request,User user){
+		
+		
+		int row = userService.deleteUser(user);
+		System.out.println(row);
+		return row+"";
+	}
+	
+	
 
 }

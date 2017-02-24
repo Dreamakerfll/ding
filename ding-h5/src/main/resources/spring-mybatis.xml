@@ -18,14 +18,8 @@
         <property name="dataSource" ref="dataSource" />
         <!-- mybatis的相关配置 --> 
         <property name="configLocation" value="classpath:mybatis-config.xml"/> 
-        <!-- 自动扫描mapping.xml文件 -->  
+        <!-- 自动扫描dao.xml文件 -->  
         <property name="mapperLocations" value="classpath:/mybatis/**/*.xml"></property>
-    </bean>
-    
-    <!-- 使用ehcache缓存 --> 
-    <bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">  
-     <property name="configLocation" value="classpath:ehcache.xml" />
-      <property name="shared" value="true" />    
     </bean>
     
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
@@ -34,7 +28,6 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
     </bean>  
   
-   
     <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager"  
         class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
@@ -54,6 +47,7 @@
             <tx:method name="*" propagation="REQUIRED" read-only="true"/>
         </tx:attributes>
     </tx:advice>
+    
     <!-- <aop:config/> 的定义，确保由txAdvice bean定义的事务通知在应用中具体点被执行 -->
     <aop:config>
         <aop:pointcut id="ServiceMethod" expression="execution(* com.dreamaker.service.*.*(..))"/>
