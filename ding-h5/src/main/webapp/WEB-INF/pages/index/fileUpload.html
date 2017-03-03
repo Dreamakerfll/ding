@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
-<title>文件上传</title>
+<title>测试页面</title>
 <script type="text/javascript" src="../libs/jquery-3.0.0.min.js"></script>
 </head>
 <body>
-	bolo图片上传
     <form action="" enctype="multipart/form-data">
         <input type="text" name="filed1"/>
         <input type="text" name="filed2"/>
@@ -49,6 +48,40 @@
     	<div>删除用户</div>
     	id<input id="id_delete"/>
     	<button id="deleteUser">删除用户</button>
+    </div>
+    
+    <div>
+    	<button id="testRedis">测试redis相关功能</button>
+    </div>
+    
+    <div>
+    	<div>设置库存</div>
+    	商品<input id="good_name_add"/>
+    	批次<input id="good_batch_add"/>
+    	初始库存<input id="good_stock_add"/>
+    	<button id="goodAdd">添加商品</button>
+    </div>
+    
+    <div>
+    	<div>增加库存</div>
+    	商品<input id="good_name_plus"/>
+    	批次<input id="good_batch_plus"/>
+    	增加库存<input id="good_stock_plus"/>
+    	<button id="goodPlus">增加库存</button>
+    </div>
+    <div>
+    	<div>扣减库存</div>
+    	商品<input id="good_name_minus"/>
+    	批次<input id="good_batch_minus"/>
+    	扣减库存<input id="good_stock_minus"/>
+    	<button id="goodMinus">扣减商品</button>
+    </div>
+    
+    <div>
+    	<div>删除库存</div>
+    	商品<input id="good_name_del"/>
+    	批次<input id="good_batch_del"/>
+    	<button id="goodDel">删除库存</button>
     </div>
     
     <script>
@@ -190,6 +223,111 @@
                 url: 'http://127.0.0.1/ding-h5/index/updatePerson',
                 type: 'post',
                 dataType : 'json',
+                success:function(data){
+                    console.log(data);
+                }
+                ,error:function(data){
+                    console.log(data);
+                }
+
+            });
+        });
+    	
+    	$('#testRedis').on('click',function(){
+
+
+            $.ajax({
+                url: 'http://127.0.0.1/ding-h5/index/testRedis',
+                type: 'post',
+                dataType : 'json',
+                success:function(data){
+                    console.log(data);
+                }
+                ,error:function(data){
+                    console.log(data);
+                }
+
+            });
+        });
+    	
+    	$('#goodAdd').on('click',function(){
+
+    		var good_name = $('#good_name_add').val();
+    		var good_batch = $('#good_batch_add').val();
+    		var good_stock = $('#good_stock_add').val();
+    		var data = {'good_name_add':good_name,'good_batch_add':good_batch,'good_stock_add':good_stock};
+
+            $.ajax({
+                url: 'http://127.0.0.1/ding-h5/index/goodAdd',
+                type: 'post',
+                dataType : 'json',
+                data:data,
+                success:function(data){
+                    console.log(data);
+                }
+                ,error:function(data){
+                    console.log(data);
+                }
+
+            });
+        });
+    	
+    	$('#goodPlus').on('click',function(){
+
+    		var good_name = $('#good_name_plus').val();
+    		var good_batch = $('#good_batch_plus').val();
+    		var good_stock = $('#good_stock_plus').val();
+    		var data = {'good_name_plus':good_name,'good_batch_plus':good_batch,'good_stock_plus':good_stock};
+
+            $.ajax({
+                url: 'http://127.0.0.1/ding-h5/index/goodPlus',
+                type: 'post',
+                dataType : 'json',
+                data:data,
+                success:function(data){
+                    console.log(data);
+                }
+                ,error:function(data){
+                    console.log(data);
+                }
+
+            });
+        });
+    	
+    	$('#goodMinus').on('click',function(){
+
+    		var good_name = $('#good_name_minus').val();
+    		var good_batch = $('#good_batch_minus').val();
+    		var good_stock = $('#good_stock_minus').val();
+    		var data = {'good_name_minus':good_name,'good_batch_minus':good_batch,'good_stock_minus':good_stock};
+
+            $.ajax({
+                url: 'http://127.0.0.1/ding-h5/index/goodMinus',
+                type: 'post',
+                dataType : 'json',
+                data:data,
+                success:function(data){
+                    console.log(data);
+                }
+                ,error:function(data){
+                    console.log(data);
+                }
+
+            });
+        });
+    	
+    	$('#goodDel').on('click',function(){
+
+
+    		var good_name = $('#good_name_del').val();
+    		var good_batch = $('#good_batch_del').val();
+    		var data = {'good_name_del':good_name,'good_batch_del':good_batch};
+    		
+            $.ajax({
+                url: 'http://127.0.0.1/ding-h5/index/goodDel',
+                type: 'post',
+                dataType : 'json',
+                data:data,
                 success:function(data){
                     console.log(data);
                 }

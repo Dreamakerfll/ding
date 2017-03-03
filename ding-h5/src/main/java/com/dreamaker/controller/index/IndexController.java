@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.dreamaker.domain.user.User;
 import com.dreamaker.service.user.UserService;
+import com.dreamaker.util.RedisService;
 
 @Controller
 @RequestMapping("index")
@@ -30,6 +32,9 @@ public class IndexController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RedisService redisService;
 	
 	@RequestMapping("home")
 	public String goToPage(){
@@ -173,6 +178,86 @@ public class IndexController {
 		int row = userService.deleteUser(user);
 		System.out.println(row);
 		return row+"";
+	}
+	
+	@RequestMapping("testRedis")
+	@ResponseBody
+	public String testRedis(HttpServletRequest request){
+		
+		RedisConnection conn = redisService.getConnection();
+		redisService.set("key", "value", 300l);
+		redisService.queuePush(conn, "queue", "haha");
+		redisService.set("key2", "value2", 300l);
+		
+		
+		//设置库存
+		redisService.hashSetSync(conn, "shotes", "batch1_red", 100);
+		
+		//扣减库存
+		redisService.hashincrSync(conn, "shotes", "batch1_red", 2);
+		redisService.closeConnection(conn);
+		
+		return "";
+	}
+	
+	@RequestMapping("goodAdd")
+	@ResponseBody
+	public String goodAdd(HttpServletRequest request){
+		
+		RedisConnection conn = redisService.getConnection();
+		
+		//设置库存
+		redisService.hashSetSync(conn, request.getParameter("good_name_add"), request.getParameter("good_batch_add"), Integer.parseInt(request.getParameter("good_stock_add")));
+		
+		//扣减库存
+//		redisService.closeConnection(conn);
+		
+		return "";
+	}
+	
+	@RequestMapping("goodPlus")
+	@ResponseBody
+	public String goodPlus(HttpServletRequest request){
+		
+		RedisConnection conn = redisService.getConnection();
+		
+		//设置库存
+		redisService.hashincrSync(conn, request.getParameter("good_name_plus"), request.getParameter("good_batch_plus"), Integer.parseInt(request.getParameter("good_stock_plus")));
+		
+		//扣减库存
+		redisService.closeConnection(conn);
+		
+		return "";
+	}
+	
+	@RequestMapping("goodMinus")
+	@ResponseBody
+	public String goodMinus(HttpServletRequest request){
+		
+		RedisConnection conn = redisService.getConnection();
+		
+		//设置库存
+		redisService.hashincrSync(conn, request.getParameter("good_name_minus"), request.getParameter("good_batch_minus"), Integer.parseInt(request.getParameter("good_stock_minus")));
+		
+		//扣减库存
+		redisService.closeConnection(conn);
+		
+		return "";
+	}
+	
+	@RequestMapping("goodDel")
+	@ResponseBody
+	public String goodDel(HttpServletRequest request){
+		
+		RedisConnection conn = redisService.getConnection();
+		
+		//设置库存
+		redisService.hashDelSync(conn, request.getParameter("good_name_del"), request.getParameter("good_batch_del"));
+		
+		//扣减库存
+		redisService.closeConnection(conn);
+		
+		return "";
 	}
 	
 	
