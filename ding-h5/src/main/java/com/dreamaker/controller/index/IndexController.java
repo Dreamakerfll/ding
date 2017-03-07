@@ -34,7 +34,7 @@ public class IndexController {
 	private UserService userService;
 	
 	@Autowired
-	private RedisService<Integer,Integer> redisService;
+	private RedisService<?,?> redisService;
 	
 	@RequestMapping("home")
 	public String goToPage(){
