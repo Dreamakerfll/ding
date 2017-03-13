@@ -30,4 +30,20 @@
 		<constructor-arg index="0" ref="redisTemplate"></constructor-arg>
 	</bean>
 	
+	<!--Spring自带的cache管理器 generic cache manager --> 
+   <bean id="springCacheManager" 
+   class="org.springframework.cache.support.SimpleCacheManager">
+     <property name="caches"> 
+       <set> 
+         <bean 
+           class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+           p:name="default" /> 
+        
+         <bean 
+           class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+           p:name="userid" /> 
+       </set> 
+     </property> 
+   </bean> 
+	
 </beans>
